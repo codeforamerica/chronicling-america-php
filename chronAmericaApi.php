@@ -22,7 +22,7 @@ class chronAmericaApi extends APIBaseClass{
 		$params =array('andtext','page','format');
 		foreach(func_get_args() as $loc => $arg)
 			$data[$params[$loc]] = $arg;
-		return self::_request(self::$api_url."/search/titles/results", 'get', array_filter($data));
+		return self::_request(self::$api_url."/search/pages/results", 'get', array_filter($data));
 	}
 	
 	public function suggest_titles($q){
