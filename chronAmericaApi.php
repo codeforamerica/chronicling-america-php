@@ -9,20 +9,24 @@ class chronAmericaApi extends APIBaseClass{
 		parent::new_request(($url?$url:self::$api_url));
 	}
 	
+	private function filter_params($params,$args){
+	// abstracts the method calls to turn most method arguments into query parameters, provided an array with
+	// the names of the keys in (data) correspondence to the method call order
+		foreach($args as $loc => $arg)
+			$data[$params[$loc]] = $arg;
+		return $data;	
+	}
+	
 	public function title_search($terms,$page=NULL,$format='json'){
 	// also supports json and atom defaults to HTML
-		$params =array('terms','page','format');
 		// can't use array_combine because if arrays are inequal it returns false
-		foreach(func_get_args() as $loc => $arg)
-			$data[$params[$loc]] = $arg;
+		$data = self::filter_params(array('terms','page','format'),func_get_args() );
 		return self::_request(self::$api_url."/search/titles/results", 'get', array_filter($data));
 	}
 	
 	public function page_search($andtext,$page=NULL,$format='json'){
-		$params =array('andtext','page','format');
-		foreach(func_get_args() as $loc => $arg)
-			$data[$params[$loc]] = $arg;
-		return self::_request(self::$api_url."/search/pages/results", 'get', array_filter($data));
+		$data = self::filter_params(array('terms','page','format'),func_get_args() );
+		return self::_request(self::$api_url."/search/titles/results", 'get', array_filter($data));
 	}
 	
 	public function suggest_titles($q){
